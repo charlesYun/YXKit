@@ -3,6 +3,6 @@
 ![](https://img.shields.io/badge/language-OC/Swift-orange.svg)
 ![](https://img.shields.io/badge/QQ-1105938518-orange.svg)
 
-pod 'YXKit', '~>1.0.0'
+pod 'YXKit', '~>0.0.1'
 
 
