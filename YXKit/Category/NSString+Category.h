@@ -11,6 +11,7 @@
 
 @interface NSString (Category)
 
+
 /**
  *  判断字符串是否为空
  */
@@ -153,7 +154,10 @@
  */
 - (NSString*)sha512;
 
-
+/**
+ 格式化字符串
+  */
+- (NSString *)formatString;
 
 
 @end

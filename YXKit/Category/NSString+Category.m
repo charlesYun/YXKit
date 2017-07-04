@@ -514,4 +514,15 @@
 }
 
 
+/**
+ 去掉前后空格
+ */
+- (NSString *)formatString
+{
+    NSCharacterSet  *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    NSString *string = [self stringByTrimmingCharactersInSet:set];
+    return string;
+}
+
+
 @end
