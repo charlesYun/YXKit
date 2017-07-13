@@ -10,15 +10,15 @@
 
 @implementation UIImageView (AnimationView)
 
+
 /**
  动画
  
  @param endpoint 结束坐标
  @param controlpoint 中间坐标
  */
-- (void)startAnimationWithEndPoint:(CGPoint)endpoint withControlPoint:(CGPoint)controlpoint animateWithDuration:(NSTimeInterval)time;
+- (void)startAnimationWithEndPoint:(CGPoint)endpoint withControlPoint:(CGPoint)controlpoint animateWithDuration:(NSTimeInterval)time completed:(void (^)())completed;
 {
-
     //终点
     CGPoint endPoint = endpoint;
     //控点
@@ -56,6 +56,10 @@
     animGroup.delegate = self;
     [self.layer addAnimation:animGroup forKey:nil];
     [self performSelector:@selector(removeFromLayer:) withObject:self.layer afterDelay:time];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        completed();
+    });
+    
 }
 
 #pragma mark -动画完成后移除

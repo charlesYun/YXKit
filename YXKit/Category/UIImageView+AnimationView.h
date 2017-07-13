@@ -13,16 +13,11 @@
 
 /**
  动画
-
+ 
  @param endpoint 结束坐标
  @param controlpoint 中间坐标
  */
-- (void)startAnimationWithEndPoint:(CGPoint)endpoint withControlPoint:(CGPoint)controlpoint animateWithDuration:(NSTimeInterval)time;
+- (void)startAnimationWithEndPoint:(CGPoint)endpoint withControlPoint:(CGPoint)controlpoint animateWithDuration:(NSTimeInterval)time completed:(void(^)())completed;
 
-/**
- 用于RAC订阅是否调用
 
- @param layerAnimation 动画layer
- */
-- (void)removeFromLayer:(CALayer *)layerAnimation;
 @end
