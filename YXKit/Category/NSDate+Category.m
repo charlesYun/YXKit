@@ -359,6 +359,30 @@
     return [NSDate timeInfoWithDate:self];
 }
 
+- (NSString *)ymdFormat {
+    return [NSDate ymdFormat];
+}
+
+- (NSString *)hmsFormat {
+    return [NSDate hmsFormat];
+}
+
+- (NSString *)ymdHmsFormat {
+    return [NSDate ymdHmsFormat];
+}
+
++ (NSString *)ymdFormat {
+    return @"yyyy-MM-dd";
+}
+
++ (NSString *)hmsFormat {
+    return @"HH:mm:ss";
+}
+
++ (NSString *)ymdHmsFormat {
+    return [NSString stringWithFormat:@"%@ %@", [self ymdFormat], [self hmsFormat]];
+}
+
 + (NSString *)timeInfoWithDate:(NSDate *)date {
     return [self timeInfoWithDateString:[self stringWithDate:date format:[self ymdHmsFormat]]];
 }
@@ -426,28 +450,59 @@
     return @"1小时前";
 }
 
-- (NSString *)ymdFormat {
-    return [NSDate ymdFormat];
++ (NSString *)stringWithFormatter:(NSString *)dateFormatter andDate:(NSDate *)date {
+    if ([dateFormatter length] == 0) {
+        return nil;
+    }
+    
+    struct tm *timeinfo;
+    char buffer[80];
+    
+    time_t rawtime = (time_t)[date timeIntervalSince1970];
+    timeinfo = gmtime(&rawtime);
+    
+    strftime(buffer, 80, [dateFormatter UTF8String], timeinfo);
+    
+    return [NSString stringWithCString:buffer encoding:NSUTF8StringEncoding];
 }
 
-- (NSString *)hmsFormat {
-    return [NSDate hmsFormat];
+- (NSString *)stringWithFormatter:(NSString *)dateFormatter {
+    
+    if ([dateFormatter length] == 0) {
+        return nil;
+    }
+    
+    // Change to Local time zone
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate:self];
+    NSDate *localDate = [self dateByAddingTimeInterval: interval];
+    
+    return [[self class] stringWithFormatter:dateFormatter andDate:localDate];
 }
 
-- (NSString *)ymdHmsFormat {
-    return [NSDate ymdHmsFormat];
+- (NSString *)httpParameterString {
+    return [self stringWithFormatter:@"%Y-%m-%d %H:%M:%S"];
 }
-
-+ (NSString *)ymdFormat {
-    return @"yyyy-MM-dd";
+- (NSString *)yearMonthDayString {
+    return [self stringWithFormatter:@"%Y-%m-%d"];
 }
-
-+ (NSString *)hmsFormat {
-    return @"HH:mm:ss";
+- (NSString *)yearMonthString {
+    return [self stringWithFormatter:@"%Y-%m"];
 }
-
-+ (NSString *)ymdHmsFormat {
-    return [NSString stringWithFormat:@"%@ %@", [self ymdFormat], [self hmsFormat]];
+- (NSString *)yearString {
+    NSString *strDate = [self yearMonthDayString];
+    NSArray *arrDate = [strDate componentsSeparatedByString:@"-"];
+    return arrDate[0];
+}
+- (NSString *)monthString {
+    NSString *strDate = [self yearMonthDayString];
+    NSArray *arrDate = [strDate componentsSeparatedByString:@"-"];
+    return arrDate[1];
+}
+- (NSString *)dayString{
+    NSString *strDate = [self yearMonthDayString];
+    NSArray *arrDate = [strDate componentsSeparatedByString:@"-"];
+    return arrDate[2];
 }
 
 - (NSDate *)offsetYears:(int)numYears {

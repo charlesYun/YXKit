@@ -169,14 +169,14 @@
 + (NSString *)timeInfoWithDate:(NSDate *)date;
 + (NSString *)timeInfoWithDateString:(NSString *)dateString;
 
-/**
- * 分别获取yyyy-MM-dd/HH:mm:ss/yyyy-MM-dd HH:mm:ss格式的字符串
- */
-- (NSString *)ymdFormat;
-- (NSString *)hmsFormat;
-- (NSString *)ymdHmsFormat;
-+ (NSString *)ymdFormat;
-+ (NSString *)hmsFormat;
-+ (NSString *)ymdHmsFormat;
+// yyyy-MM-dd HH:mm:ss
+- (NSString *)httpParameterString;
+// yyyy-MM-dd
+- (NSString *)yearMonthDayString;
+/** yyyy-MM */
+- (NSString *)yearMonthString;
+- (NSString *)yearString;
+- (NSString *)monthString;
+- (NSString *)dayString;
 
 @end
