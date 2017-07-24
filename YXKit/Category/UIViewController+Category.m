@@ -10,18 +10,7 @@
 
 @implementation UIViewController (Category)
 
-/**
- *  从不同storyBoard获取控制器（这里storyBoard的id必须和类名一致）
- *
- *  @param storyBoardName storyBoard Name
- *
- *  @return 对应控制器
- */
-+ (id)viewControllerWithStoryBoardType:(NSString *)storyBoardName {
-    
-    NSString *identifier = NSStringFromClass(self);
-    return [[UIStoryboard storyboardWithName:storyBoardName bundle:nil] instantiateViewControllerWithIdentifier:identifier];
-}
+
 
 /**
  push
