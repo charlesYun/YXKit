@@ -33,4 +33,11 @@
 
 /** 压缩图片至指定像素 */
 - (UIImage *)rescaleImageToPX:(CGFloat )toPX;
+
+/**
+ 加载gif
+
+ @param name gif图片名称
+ */
++ (UIImage *)animatedGIFNamed:(NSString *)name;
 @end
