@@ -334,7 +334,16 @@
  *  @return YES 是 NO 不是
  */
 - (BOOL)empty {
-    return [self length] > 0 ? NO : YES;
+    if (self == nil || self == NULL) {
+        return YES;
+    }
+    if ([self isKindOfClass:[NSNull class]]) {
+        return YES;
+    }
+    if ([[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0) {
+        return YES;
+    }
+    return NO;
 }
 
 /**

@@ -10,6 +10,7 @@
 #import <Accelerate/Accelerate.h>
 #import <ImageIO/ImageIO.h>
 #import <objc/runtime.h>
+#import "NSString+Category.h"
 @implementation UIImage (Category)
 
 
@@ -476,6 +477,68 @@ static CGRect swapWidthAndHeight(CGRect rect)
         return [UIImage imageNamed:name];
     }
 }
+
+
+- (UIImage*)imageWaterMarkWithImage:(UIImage *)image imageRect:(CGRect)imgRect alpha:(CGFloat)alpha
+{
+    return [self imageWaterMarkWithString:nil point:CGPointZero attribute:nil image:image imageRect:imgRect alpha:alpha];
+}
+
+- (UIImage*)imageWaterMarkWithString:(NSString*)str point:(CGPoint)strPoint attribute:(NSDictionary *)attri
+{
+    return [self imageWaterMarkWithString:str point:strPoint attribute:attri image:nil imageRect:CGRectZero alpha:0];
+}
+
+- (UIImage*)imageWaterMarkWithString:(NSString*)str point:(CGPoint)strPoint attribute:(NSDictionary *)attri image:(UIImage *)image imageRect:(CGRect)imgRect alpha:(CGFloat)alpha
+{
+    UIGraphicsBeginImageContextWithOptions(self.size, TRUE, [[UIScreen mainScreen] scale]);
+    [self drawInRect:CGRectMake(0, 0, self.size.width, self.size.height) blendMode:kCGBlendModeNormal alpha:1.0];
+    if (image) {
+        [image drawInRect:imgRect blendMode:kCGBlendModeNormal alpha:alpha];
+    }
+    if (str) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:attri];
+        UIFont *font = [dict objectForKey:NSFontAttributeName];
+        CGFloat fontFloat = [self imageProportion:font.pointSize];
+        [dict setValue:[UIFont systemFontOfSize:fontFloat] forKey:NSFontAttributeName];
+        CGFloat height = [str heightWithWidth:self.size.width andFont:fontFloat].height;
+        CGRect frame = [self imageShowFrame:strPoint fontHegiht:height];
+        [str drawInRect:frame withAttributes:dict];
+    }
+    UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return resultImage;
+}
+
+
+/**
+ 计算图片水印显示frame
+ 
+ @param point   原frame
+ @param height  文字高度
+ @return        适配图片宽高
+ */
+- (CGRect)imageShowFrame:(CGPoint)point fontHegiht:(CGFloat)height
+{
+    CGFloat x = [self imageProportion:point.x];
+    CGFloat y = self.size.height - height - [self imageProportion:(self.size.height - point.y)];
+    CGFloat w = self.size.width - x * 2;
+    CGFloat h = height;
+    return  CGRectMake(x, y, w, h);
+}
+
+
+/**
+ 转换值大小
+ 
+ @param number 原屏幕值
+ @return       适配图片比例
+ */
+- (CGFloat)imageProportion:(CGFloat)number
+{
+    return number / ([UIScreen mainScreen].bounds.size.width / self.size.width);
+}
+
 
 
 
