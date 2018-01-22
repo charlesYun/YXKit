@@ -40,22 +40,9 @@
  *  @return YES 成功 NO 失败
  */
 - (BOOL)isTelephone {
-    NSString * MOBILE = @"^1(3[0-9]|47|5[0-35-9]|8[025-9])\\d{8}$";
-    NSString * CM = @"^((13[4-9])|(147)|(15[0-2,7-9])|(178)|(18[2-4,7-8]))\\d{8}|(1705)\\d{7}$";;
-    NSString * CU = @"^((13[0-2])|(145)|(15[5-6])|(176)|(18[5,6]))\\d{8}|(1709)\\d{7}$";
-    NSString * CT = @"^((133)|(153)|(177)|(18[0,1,9]))\\d{8}$";
-    NSString * PHS = @"^0(10|2[0-5789]|\\d{3})\\d{7,8}$";
+    NSString * MOBILE = @"^0?(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$";
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-    NSPredicate *regextestcm = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CM];
-    NSPredicate *regextestcu = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CU];
-    NSPredicate *regextestct = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CT];
-    NSPredicate *regextestphs = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", PHS];
-    
-    return  [regextestmobile evaluateWithObject:self]   ||
-    [regextestphs evaluateWithObject:self]      ||
-    [regextestct evaluateWithObject:self]       ||
-    [regextestcu evaluateWithObject:self]       ||
-    [regextestcm evaluateWithObject:self];
+    return  [regextestmobile evaluateWithObject:self];
 }
 
 - (BOOL)isValidZipcode {
